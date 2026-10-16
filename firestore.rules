@@ -1,0 +1,49 @@
+rules_version = '2';
+
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    // Player profile: the cloud save document (see FirebaseCloudSaveService)
+    // and the same document the leaderboard (FirebaseLeaderboardService)
+    // reads rating/displayName from. Read is open to any signed-in player —
+    // the leaderboard's range queries need to read other players'
+    // documents, not just their own. Write is restricted to the document's
+    // own owner: this is the single most important rule in this file —
+    // without it, any signed-in client could edit another player's
+    // currency, rating, or unlocked items directly by writing to their
+    // users/{userId} document.
+    match /users/{userId} {
+      allow read: if request.auth != null;
+      allow write: if request.auth != null && request.auth.uid == userId;
+    }
+
+    // Matchmaking queue and online matches (see FirebaseOnlineMatchService):
+    // both are inherently cross-user by design — finding a match means a
+    // DIFFERENT signed-in player claims your queue entry (or joins your
+    // friendly room) by writing to a document you created. That rules out
+    // a strict "only the creator can write" rule here without adding a
+    // Cloud Function to referee the claim server-side, which this project
+    // doesn't have yet. These rules only require the caller to be signed
+    // in — they do not stop a determined player from tampering with their
+    // own match's outcome, the same "client-trusted result" limitation
+    // FirebaseOnlineMatchService's own doc comment already calls out.
+    match /matchmakingQueue/{entryId} {
+      allow read, write: if request.auth != null;
+    }
+
+    match /onlineMatches/{roomCode} {
+      allow read, write: if request.auth != null;
+
+      match /moves/{moveId} {
+        allow read, write: if request.auth != null;
+      }
+    }
+
+    // Everything else stays closed. Firestore already denies by default
+    // when no rule matches a path — this just makes that explicit instead
+    // of relying on it silently.
+    match /{document=**} {
+      allow read, write: if false;
+    }
+  }
+}

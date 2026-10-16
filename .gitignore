@@ -1,0 +1,66 @@
+# -------------------------------------------------
+# .gitignore para projetos Unity
+# -------------------------------------------------
+
+# Pastas geradas pelo Editor — nunca devem ir para o repositório
+/[Ll]ibrary/
+/[Tt]emp/
+/[Oo]bj/
+/[Bb]uild/
+/[Bb]uilds/
+/[Ll]ogs/
+/[Uu]ser[Ss]ettings/
+/[Mm]emoryCaptures/
+
+# Arquivos de projeto gerados pelo Editor / IDE (recriados automaticamente)
+.vs/
+.vscode/
+.idea/
+*.csproj
+*.unityproj
+*.sln
+*.suo
+*.tmp
+*.user
+*.userprefs
+*.pidb
+*.booproj
+*.svd
+*.pdb
+*.mdb
+*.opendb
+*.VC.db
+
+# Cache de asset bundles
+*.apk
+*.aab
+*.unitypackage
+*.app
+
+# Crash reports
+sysinfo.txt
+
+# Arquivos gerados pelo pacote de Recordings/Cinemachine/etc (se usados)
+/[Rr]ecordings/
+
+# macOS
+.DS_Store
+
+# Windows
+Thumbs.db
+ehthumbs.db
+
+# Chaves de assinatura de build — nunca versionar
+*.keystore
+*.jks
+
+# Arquivo de solução recriado pelo Unity a cada abertura do projeto
+*.slnx
+
+# Configs do Firebase: carregam o App ID e as chaves do projeto. Mantidos
+# fora do repositório público — cada dev/máquina usa sua própria cópia
+# baixada do Firebase Console.
+/Assets/google-services.json
+/Assets/google-services.json.meta
+/Assets/GoogleService-Info.plist
+/Assets/GoogleService-Info.plist.meta
